@@ -11,18 +11,28 @@ struct ShopView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
-
                 Text("Shop")
                     .font(.largeTitle)
                     .fontWeight(.semibold)
 
                 LazyVGrid(columns: columns, spacing: 16) {
-                    productCard("Treats")
-                    productCard("Toys")
-                    productCard("Accessories")
-                    productCard("Food")
+                    Button(action: { appState.activeModal = .addPet }) {
+                        productCard("Treats")
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    Button(action: { appState.activeModal = .addPet }) {
+                        productCard("Toys")
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    Button(action: { appState.activeModal = .addPet }) {
+                        productCard("Accessories")
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    Button(action: { appState.activeModal = .addPet }) {
+                        productCard("Food")
+                    }
+                    .buttonStyle(PlainButtonStyle())
                 }
-
             }
             .padding(20)
         }

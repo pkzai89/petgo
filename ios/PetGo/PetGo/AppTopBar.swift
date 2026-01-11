@@ -3,10 +3,7 @@ import SwiftUI
 
 struct AppTopBar: View {
     @State private var showMenu = false
-    @State private var showProfile = false
-    @State private var showSettings = false
-    @State private var showNotifications = false
-    @State private var showHelp = false
+    @EnvironmentObject private var appState: AppState
 
     var body: some View {
         VStack(spacing: 0) {
@@ -50,34 +47,22 @@ struct AppTopBar: View {
             MenuSheet(
                 onProfile: {
                     showMenu = false
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { showProfile = true }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { appState.activeModal = .profile }
                 },
                 onSettings: {
                     showMenu = false
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { showSettings = true }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { appState.activeModal = .settings }
                 },
                 onNotifications: {
                     showMenu = false
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { showNotifications = true }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { appState.activeModal = .notifications }
                 },
                 onHelp: {
                     showMenu = false
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { showHelp = true }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { appState.activeModal = .help }
                 }
             )
             .presentationDetents([.medium])
-        }
-        .fullScreenCover(isPresented: $showProfile) {
-            ProfileView()
-        }
-        .fullScreenCover(isPresented: $showSettings) {
-            SettingsView()
-        }
-        .fullScreenCover(isPresented: $showNotifications) {
-            NotificationsView()
-        }
-        .fullScreenCover(isPresented: $showHelp) {
-            HelpView()
         }
     }
 }

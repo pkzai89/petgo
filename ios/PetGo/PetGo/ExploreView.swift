@@ -6,7 +6,6 @@ struct ExploreView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
-
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Explore")
                         .font(.largeTitle)
@@ -22,10 +21,18 @@ struct ExploreView: View {
 
                 categoryChips
 
-                placeCard("Greenwich Park", "Park", "0.8 km")
-                placeCard("Paws & Coffee", "Cafe", "1.2 km")
-                placeCard("City Vets", "Vet", "2.0 km")
-
+                Button(action: { appState.activeModal = .addMemory }) {
+                    placeCard("Greenwich Park", "Park", "0.8 km")
+                }
+                .buttonStyle(PlainButtonStyle())
+                Button(action: { appState.activeModal = .addMemory }) {
+                    placeCard("Paws & Coffee", "Cafe", "1.2 km")
+                }
+                .buttonStyle(PlainButtonStyle())
+                Button(action: { appState.activeModal = .addMemory }) {
+                    placeCard("City Vets", "Vet", "2.0 km")
+                }
+                .buttonStyle(PlainButtonStyle())
             }
             .padding(20)
         }

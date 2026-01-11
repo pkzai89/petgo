@@ -6,7 +6,6 @@ struct HomeView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
-
                 // Pet Card
                 VStack(alignment: .leading, spacing: 12) {
                     HStack(spacing: 12) {
@@ -42,7 +41,7 @@ struct HomeView: View {
                     }
 
                     HStack(spacing: 12) {
-                        Button("Details") {}
+                        Button("Details") { appState.activeModal = .profile }
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 8)
                             .overlay(
