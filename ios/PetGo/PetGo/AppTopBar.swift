@@ -47,15 +47,33 @@ struct AppTopBar: View {
             MenuSheet(
                 onProfile: {
                     showMenu = false
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { appState.activeModal = .profile }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        if appState.authStatus == .loggedOut {
+                            appState.activeModal = .login
+                        } else {
+                            appState.activeModal = .profile
+                        }
+                    }
                 },
                 onSettings: {
                     showMenu = false
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { appState.activeModal = .settings }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        if appState.authStatus == .loggedOut {
+                            appState.activeModal = .login
+                        } else {
+                            appState.activeModal = .settings
+                        }
+                    }
                 },
                 onNotifications: {
                     showMenu = false
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { appState.activeModal = .notifications }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        if appState.authStatus == .loggedOut {
+                            appState.activeModal = .login
+                        } else {
+                            appState.activeModal = .notifications
+                        }
+                    }
                 },
                 onHelp: {
                     showMenu = false
@@ -73,6 +91,8 @@ struct MenuSheet: View {
     let onNotifications: () -> Void
     let onHelp: () -> Void
 
+    @EnvironmentObject private var appState: AppState
+
     var body: some View {
         VStack(spacing: 0) {
             Capsule()
@@ -85,6 +105,10 @@ struct MenuSheet: View {
                 MenuRow(icon: "gearshape", title: "Settings", action: onSettings)
                 MenuRow(icon: "bell", title: "Notifications", action: onNotifications)
                 MenuRow(icon: "questionmark.circle", title: "Help", action: onHelp)
+                MenuRow(icon: "rectangle.portrait.and.arrow.right", title: "Log out", action: {
+                    appState.logOut()
+                    appState.activeModal = nil
+                })
             }
             .background(Color(.systemBackground))
             .cornerRadius(18)

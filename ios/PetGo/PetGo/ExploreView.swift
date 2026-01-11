@@ -21,15 +21,33 @@ struct ExploreView: View {
 
                 categoryChips
 
-                Button(action: { appState.activeModal = .addMemory }) {
+                Button(action: {
+                    if appState.authStatus == .loggedOut {
+                        appState.activeModal = .login
+                    } else {
+                        appState.activeModal = .addMemory
+                    }
+                }) {
                     placeCard("Greenwich Park", "Park", "0.8 km")
                 }
                 .buttonStyle(PlainButtonStyle())
-                Button(action: { appState.activeModal = .addMemory }) {
+                Button(action: {
+                    if appState.authStatus == .loggedOut {
+                        appState.activeModal = .login
+                    } else {
+                        appState.activeModal = .addMemory
+                    }
+                }) {
                     placeCard("Paws & Coffee", "Cafe", "1.2 km")
                 }
                 .buttonStyle(PlainButtonStyle())
-                Button(action: { appState.activeModal = .addMemory }) {
+                Button(action: {
+                    if appState.authStatus == .loggedOut {
+                        appState.activeModal = .login
+                    } else {
+                        appState.activeModal = .addMemory
+                    }
+                }) {
                     placeCard("City Vets", "Vet", "2.0 km")
                 }
                 .buttonStyle(PlainButtonStyle())

@@ -41,7 +41,13 @@ struct HomeView: View {
                     }
 
                     HStack(spacing: 12) {
-                        Button("Details") { appState.activeModal = .profile }
+                        Button("Details") {
+                            if appState.authStatus == .loggedOut {
+                                appState.activeModal = .login
+                            } else {
+                                appState.activeModal = .profile
+                            }
+                        }
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 8)
                             .overlay(

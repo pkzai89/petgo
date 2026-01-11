@@ -16,19 +16,43 @@ struct ShopView: View {
                     .fontWeight(.semibold)
 
                 LazyVGrid(columns: columns, spacing: 16) {
-                    Button(action: { appState.activeModal = .addPet }) {
+                    Button(action: {
+                        if appState.authStatus == .loggedOut {
+                            appState.activeModal = .login
+                        } else {
+                            appState.activeModal = .addPet
+                        }
+                    }) {
                         productCard("Treats")
                     }
                     .buttonStyle(PlainButtonStyle())
-                    Button(action: { appState.activeModal = .addPet }) {
+                    Button(action: {
+                        if appState.authStatus == .loggedOut {
+                            appState.activeModal = .login
+                        } else {
+                            appState.activeModal = .addPet
+                        }
+                    }) {
                         productCard("Toys")
                     }
                     .buttonStyle(PlainButtonStyle())
-                    Button(action: { appState.activeModal = .addPet }) {
+                    Button(action: {
+                        if appState.authStatus == .loggedOut {
+                            appState.activeModal = .login
+                        } else {
+                            appState.activeModal = .addPet
+                        }
+                    }) {
                         productCard("Accessories")
                     }
                     .buttonStyle(PlainButtonStyle())
-                    Button(action: { appState.activeModal = .addPet }) {
+                    Button(action: {
+                        if appState.authStatus == .loggedOut {
+                            appState.activeModal = .login
+                        } else {
+                            appState.activeModal = .addPet
+                        }
+                    }) {
                         productCard("Food")
                     }
                     .buttonStyle(PlainButtonStyle())

@@ -9,21 +9,33 @@ struct MemoriesView: View {
 
                 // Memory card 1
                 Button {
-                    appState.activeModal = .memoryDetail
+                    if appState.authStatus == .loggedOut {
+                        appState.activeModal = .login
+                    } else {
+                        appState.activeModal = .memoryDetail
+                    }
                 } label: {
                     MemoryCard(title: "Beach Day", subtitle: "Sunny walk by the sea")
                 }
 
                 // Memory card 2
                 Button {
-                    appState.activeModal = .memoryDetail
+                    if appState.authStatus == .loggedOut {
+                        appState.activeModal = .login
+                    } else {
+                        appState.activeModal = .memoryDetail
+                    }
                 } label: {
                     MemoryCard(title: "Vet Visit", subtitle: "Annual check-up")
                 }
 
                 // Memory card 3
                 Button {
-                    appState.activeModal = .memoryDetail
+                    if appState.authStatus == .loggedOut {
+                        appState.activeModal = .login
+                    } else {
+                        appState.activeModal = .memoryDetail
+                    }
                 } label: {
                     MemoryCard(title: "First Day Home", subtitle: "Welcome to the family")
                 }
