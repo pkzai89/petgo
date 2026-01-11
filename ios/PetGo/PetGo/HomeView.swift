@@ -5,113 +5,149 @@ struct HomeView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
-                // Pet Card
-                VStack(alignment: .leading, spacing: 12) {
-                    HStack(spacing: 12) {
-                        Circle()
-                            .fill(Color.gray.opacity(0.3))
-                            .frame(width: 56, height: 56)
-                            .overlay(
-                                Image(systemName: "pawprint.fill")
-                                    .foregroundColor(.blue)
-                            )
+            VStack(spacing: 20) {
+                TopSection()
+                PetCardSection()
+                ReminderSection()
+                NearbySection()
+            }
+            .padding(.top, 16)
+            .padding(.bottom, 24)
+        }
+        .background(Color(.systemGroupedBackground))
+    }
+}
 
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("Rex")
-                                .font(.headline)
+// MARK: - Subviews
 
-                            Text("Golden Retriever")
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
+private struct TopSection: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text("PetGo")
+                .font(.title)
+                .fontWeight(.semibold)
+                .foregroundColor(.blue)
+        }
+        .padding(.horizontal, 20)
+    }
+}
 
-                            Text("2 yrs • 28 kg")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
+private struct PetCardSection: View {
+    @EnvironmentObject private var appState: AppState
 
-                        Spacer()
-
-                        Button {
-                        } label: {
-                            Image(systemName: "plus.circle.fill")
-                                .foregroundColor(.blue)
-                                .font(.title3)
-                        }
+    var body: some View {
+        if appState.authStatus == .loggedIn {
+            Button {
+                appState.activeModal = .petDetail
+            } label: {
+                HStack(spacing: 16) {
+                    Circle()
+                        .fill(Color(.systemGray5))
+                        .frame(width: 64, height: 64)
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Richer")
+                            .font(.headline)
+                        Text("Dog · Pomeranian")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                        Text("2 yrs · 2.9 kg")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
                     }
-
-                    HStack(spacing: 12) {
-                        Button("Details") {
-                            if appState.authStatus == .loggedOut {
-                                appState.activeModal = .login
-                            } else {
-                                appState.activeModal = .profile
-                            }
-                        }
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 8)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(Color.blue)
-                            )
-
-                        Button("Share") {}
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 8)
-                            .background(Color.blue.opacity(0.15))
-                            .cornerRadius(8)
-                    }
+                    Spacer()
+                    Image(systemName: "plus.circle.fill")
+                        .font(.system(size: 24))
+                        .foregroundColor(.blue)
                 }
                 .padding()
                 .background(Color.white)
                 .cornerRadius(16)
-                .shadow(color: .black.opacity(0.05), radius: 8)
-
-                // Reminders
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("Reminders")
-                        .font(.headline)
-
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text("Vet appointment")
-                            .font(.subheadline)
-                            .foregroundColor(.white)
-
-                        Text("Tomorrow • Rex")
-                            .font(.caption)
-                            .foregroundColor(.white.opacity(0.8))
-                    }
-                    .padding()
-                    .background(Color.black)
-                    .cornerRadius(12)
-                }
-
-                // Nearby
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("Nearby")
-                        .font(.headline)
-
-                    VStack(spacing: 8) {
-                        nearbyRow("Greenwich Park", "0.8 km")
-                        nearbyRow("Paws & Coffee", "1.2 km")
-                    }
-                }
-
+                .shadow(color: Color.black.opacity(0.05), radius: 4)
             }
-            .padding(20)
+            .padding(.horizontal, 20)
+        } else {
+            HStack(spacing: 16) {
+                ZStack {
+                    Circle()
+                        .fill(Color(.systemGray5))
+                        .frame(width: 64, height: 64)
+                    Image(systemName: "lock.fill")
+                        .font(.system(size: 32))
+                        .foregroundColor(.gray)
+                }
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Sign in to see your pets")
+                        .font(.headline)
+                    Text("Create an account to manage pets, reminders, and memories")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+                Spacer()
+            }
+            .padding()
+            .background(Color.white)
+            .cornerRadius(16)
+            .shadow(color: Color.black.opacity(0.05), radius: 4)
+            .padding(.horizontal, 20)
         }
-        .background(Color(.systemGroupedBackground))
     }
+}
 
-    private func nearbyRow(_ name: String, _ distance: String) -> some View {
-        HStack {
-            Text(name)
-            Spacer()
-            Text(distance)
-                .foregroundColor(.secondary)
+private struct ReminderSection: View {
+    @EnvironmentObject private var appState: AppState
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Reminders")
+                .font(.headline)
+            Button {
+                if appState.authStatus == .loggedIn {
+                    appState.activeModal = .reminderDetail
+                }
+            } label: {
+                HStack(spacing: 12) {
+                    Circle()
+                        .fill(Color.blue)
+                        .frame(width: 10, height: 10)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Vet checkup")
+                            .font(.subheadline)
+                        Text("Tomorrow · Richer")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                    Spacer()
+                }
+                .padding()
+                .background(Color.white)
+                .cornerRadius(16)
+                .shadow(color: Color.black.opacity(0.05), radius: 4)
+
+                .opacity(appState.authStatus == .loggedIn ? 1.0 : 0.4)
+            }
+            .disabled(appState.authStatus != .loggedIn)
+            .padding(.horizontal, 20)
         }
-        .padding()
-        .background(Color.white)
-        .cornerRadius(12)
+    }
+}
+
+private struct NearbySection: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Nearby")
+                .font(.headline)
+
+            HStack {
+                Text("Parks")
+                    .font(.subheadline)
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .foregroundColor(.secondary)
+            }
+            .padding()
+            .background(Color.white)
+            .cornerRadius(16)
+        }
+        .padding(.horizontal, 20)
     }
 }

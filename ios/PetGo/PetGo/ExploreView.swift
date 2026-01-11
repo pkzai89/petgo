@@ -1,140 +1,157 @@
 import SwiftUI
 
 struct ExploreView: View {
+
     @EnvironmentObject private var appState: AppState
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
+
+                // Header
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Explore")
-                        .font(.largeTitle)
+                        .font(.title)
                         .fontWeight(.semibold)
 
                     Text("Pet-friendly places near you")
+                        .font(.subheadline)
                         .foregroundColor(.secondary)
                 }
+                .padding(.horizontal, 20)
+                .padding(.top, 16)
 
-                searchBar
-
-                mapPlaceholder
-
-                categoryChips
-
-                Button(action: {
-                    if appState.authStatus == .loggedOut {
-                        appState.activeModal = .login
-                    } else {
-                        appState.activeModal = .addMemory
-                    }
-                }) {
-                    placeCard("Greenwich Park", "Park", "0.8 km")
+                // Search
+                HStack {
+                    Image(systemName: "magnifyingglass")
+                        .foregroundColor(.secondary)
+                    Text("Search parks, cafes, vets…")
+                        .foregroundColor(.secondary)
+                    Spacer()
                 }
-                .buttonStyle(PlainButtonStyle())
-                Button(action: {
-                    if appState.authStatus == .loggedOut {
-                        appState.activeModal = .login
-                    } else {
-                        appState.activeModal = .addMemory
-                    }
-                }) {
-                    placeCard("Paws & Coffee", "Cafe", "1.2 km")
+                .padding()
+                .background(Color(.systemGray6))
+                .cornerRadius(12)
+                .padding(.horizontal, 20)
+
+                // Map placeholder
+                VStack(spacing: 8) {
+                    Image(systemName: "map.fill")
+                        .font(.system(size: 32))
+                        .foregroundColor(.secondary)
+
+                    Text("Map view coming soon")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
                 }
-                .buttonStyle(PlainButtonStyle())
-                Button(action: {
-                    if appState.authStatus == .loggedOut {
-                        appState.activeModal = .login
-                    } else {
-                        appState.activeModal = .addMemory
+                .frame(height: 220)
+                .frame(maxWidth: .infinity)
+                .background(Color(.systemGray5))
+                .cornerRadius(16)
+                .padding(.horizontal, 20)
+
+                // Category chips
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 12) {
+                        CategoryChip(title: "Parks", selected: true)
+                        CategoryChip(title: "Cafes")
+                        CategoryChip(title: "Vets")
+                        CategoryChip(title: "Groomers")
+                        CategoryChip(title: "Shops")
                     }
-                }) {
-                    placeCard("City Vets", "Vet", "2.0 km")
+                    .padding(.horizontal, 20)
                 }
-                .buttonStyle(PlainButtonStyle())
+
+                // Places
+                VStack(spacing: 14) {
+                    PlaceRow(
+                        name: "Greenwich Park",
+                        category: "Park",
+                        distance: "0.8 km away"
+                    ) {
+                        appState.activeModal = .placeDetail
+                    }
+
+                    PlaceRow(
+                        name: "Paws & Coffee",
+                        category: "Cafe",
+                        distance: "1.2 km away"
+                    ) {
+                        appState.activeModal = .placeDetail
+                    }
+
+                    PlaceRow(
+                        name: "City Vets",
+                        category: "Vet",
+                        distance: "2.0 km away"
+                    ) {
+                        appState.activeModal = .placeDetail
+                    }
+                }
+                .padding(.horizontal, 20)
+                .padding(.bottom, 24)
             }
-            .padding(20)
         }
         .background(Color(.systemGroupedBackground))
     }
+}
 
-    private var searchBar: some View {
-        HStack {
-            Image(systemName: "magnifyingglass")
-            Text("Search parks, cafes, vets…")
-                .foregroundColor(.secondary)
-            Spacer()
-        }
-        .padding()
-        .background(Color.white)
-        .cornerRadius(12)
-    }
+// MARK: - Subviews
 
-    private var mapPlaceholder: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 16)
-                .fill(Color.gray.opacity(0.2))
-                .frame(height: 220)
+private struct CategoryChip: View {
+    let title: String
+    var selected: Bool = false
 
-            VStack(spacing: 8) {
-                Image(systemName: "map.fill")
-                    .font(.largeTitle)
-                    .foregroundColor(.gray)
-
-                Text("Map view coming soon")
-                    .foregroundColor(.secondary)
-            }
-        }
-    }
-
-    private var categoryChips: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 10) {
-                chip("Parks", selected: true)
-                chip("Cafes")
-                chip("Vets")
-                chip("Groomers")
-                chip("Shops")
-            }
-        }
-    }
-
-    private func chip(_ title: String, selected: Bool = false) -> some View {
+    var body: some View {
         Text(title)
+            .font(.subheadline)
+            .fontWeight(.semibold)
             .padding(.horizontal, 14)
             .padding(.vertical, 8)
             .background(selected ? Color.blue : Color.clear)
-            .foregroundColor(selected ? .white : .primary)
+            .foregroundColor(selected ? .white : .blue)
             .overlay(
                 RoundedRectangle(cornerRadius: 16)
-                    .stroke(Color.blue)
+                    .stroke(Color.blue, lineWidth: selected ? 0 : 1)
             )
             .cornerRadius(16)
     }
+}
 
-    private func placeCard(_ name: String, _ type: String, _ distance: String) -> some View {
-        HStack(spacing: 12) {
-            RoundedRectangle(cornerRadius: 8)
-                .fill(Color.gray.opacity(0.3))
-                .frame(width: 56, height: 56)
+private struct PlaceRow: View {
+    let name: String
+    let category: String
+    let distance: String
+    let action: () -> Void
 
-            VStack(alignment: .leading, spacing: 4) {
-                Text(name)
-                    .font(.headline)
-                Text(type)
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-                Text(distance)
-                    .font(.caption)
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 12) {
+                Rectangle()
+                    .fill(Color(.systemGray5))
+                    .frame(width: 56, height: 56)
+                    .cornerRadius(12)
+
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(name)
+                        .font(.headline)
+                    Text(category)
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                    Text(distance)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+
+                Spacer()
+
+                Image(systemName: "chevron.right")
                     .foregroundColor(.secondary)
             }
-
-            Spacer()
-            Image(systemName: "chevron.right")
-                .foregroundColor(.secondary)
+            .padding()
+            .background(Color.white)
+            .cornerRadius(16)
+            .shadow(color: Color.black.opacity(0.05), radius: 4)
         }
-        .padding()
-        .background(Color.white)
-        .cornerRadius(16)
-        .shadow(color: .black.opacity(0.05), radius: 8)
     }
 }

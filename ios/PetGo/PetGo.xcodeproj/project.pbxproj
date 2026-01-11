@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		D00FFCBC2F14205A00D3F244 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = D00FFCBB2F14205A00D3F244 /* FirebaseAuth */; };
+		D00FFCBE2F14205A00D3F244 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = D00FFCBD2F14205A00D3F244 /* FirebaseCore */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		D00FFC712F13B54600D3F244 /* PetGo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PetGo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +28,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D00FFCBE2F14205A00D3F244 /* FirebaseCore in Frameworks */,
+				D00FFCBC2F14205A00D3F244 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +72,8 @@
 			);
 			name = PetGo;
 			packageProductDependencies = (
+				D00FFCBB2F14205A00D3F244 /* FirebaseAuth */,
+				D00FFCBD2F14205A00D3F244 /* FirebaseCore */,
 			);
 			productName = PetGo;
 			productReference = D00FFC712F13B54600D3F244 /* PetGo.app */;
@@ -94,6 +103,9 @@
 			);
 			mainGroup = D00FFC682F13B54500D3F244;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				D00FFCBA2F14205A00D3F244 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D00FFC722F13B54600D3F244 /* Products */;
 			projectDirPath = "";
@@ -332,6 +344,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D00FFCBA2F14205A00D3F244 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.7.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D00FFCBB2F14205A00D3F244 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D00FFCBA2F14205A00D3F244 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		D00FFCBD2F14205A00D3F244 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D00FFCBA2F14205A00D3F244 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D00FFC692F13B54500D3F244 /* Project object */;
 }

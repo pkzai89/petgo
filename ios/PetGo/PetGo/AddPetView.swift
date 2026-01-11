@@ -1,46 +1,64 @@
 import SwiftUI
 
 struct AddPetView: View {
+
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var appState: AppState
+
+    @State private var petName: String = ""
+    @State private var petType: String = "Dog"
+
     var body: some View {
-        ZStack {
-            Color(.systemGroupedBackground).ignoresSafeArea()
-            VStack {
-                HStack {
-                    Button(action: { dismiss() }) {
-                        Image(systemName: "xmark")
-                            .font(.title2.bold())
-                            .foregroundColor(.primary)
-                    }
-                    Spacer()
-                }
-                .padding([.top, .leading, .trailing])
-                Text("Add Pet")
-                    .font(.title.bold())
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .padding(.top, -36)
-                Spacer()
-                Image(systemName: "pawprint")
-                    .font(.system(size: 64))
-                    .foregroundColor(.accentColor)
-                    .padding(.bottom, 16)
-                Text("Add a new pet")
-                    .font(.title2.bold())
-                Text("This feature is coming soon.")
+        VStack(spacing: 24) {
+
+            // Header
+            VStack(alignment: .leading, spacing: 6) {
+                Text("Add Your Pet")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+
+                Text("Create a profile to personalise PetGo")
                     .font(.subheadline)
                     .foregroundColor(.secondary)
-                    .padding(.bottom, 32)
-                Spacer()
-                Button(action: {}) {
-                    Text("Continue")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Capsule().fill(Color.accentColor))
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.top, 20)
+
+            // Form
+            VStack(spacing: 16) {
+                TextField("Pet name", text: $petName)
+                    .textFieldStyle(.roundedBorder)
+
+                Picker("Pet type", selection: $petType) {
+                    Text("Dog").tag("Dog")
+                    Text("Cat").tag("Cat")
                 }
-                .padding([.horizontal, .bottom])
+                .pickerStyle(.segmented)
+            }
+
+            Spacer()
+
+            // Primary action
+            Button {
+                appState.completeOnboarding()
+                dismiss()
+            } label: {
+                Text("Save Pet")
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(14)
+                    .fontWeight(.semibold)
             }
         }
+        .padding(20)
+        .background(Color(.systemGroupedBackground))
+        .ignoresSafeArea(edges: .bottom)
     }
+}
+
+#Preview {
+    AddPetView()
+        .environmentObject(AppState())
 }

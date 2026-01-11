@@ -1,52 +1,70 @@
 import SwiftUI
 
 struct OnboardingView: View {
-    @EnvironmentObject private var appState: AppState
-    @State private var pageIndex = 0
+
+    @Environment(\.dismiss) private var dismiss
+    @State private var pageIndex: Int = 0
 
     var body: some View {
-        TabView(selection: $pageIndex) {
+        VStack(spacing: 24) {
+            Spacer()
 
-            VStack(spacing: 24) {
-                Spacer()
-                Image(systemName: "pawprint.fill")
-                    .font(.system(size: 56))
-                    .foregroundColor(.blue)
-
-                Text("Welcome to PetGo")
-                    .font(.title2)
-                    .fontWeight(.semibold)
-
-                Text("Let’s get started")
-                    .foregroundColor(.secondary)
-
-                Spacer()
-
-                Button("Next") {
-                    pageIndex = 1
+            Group {
+                if pageIndex == 0 {
+                    onboardingPage(
+                        title: "Welcome to PetGo",
+                        subtitle: "Everything your pet needs, in one place"
+                    )
+                } else if pageIndex == 1 {
+                    onboardingPage(
+                        title: "Track & remember",
+                        subtitle: "Memories, reminders, and milestones"
+                    )
+                } else {
+                    onboardingPage(
+                        title: "Let’s get started",
+                        subtitle: "Your pet’s life, beautifully organised"
+                    )
                 }
-                .buttonStyle(.borderedProminent)
             }
-            .tag(0)
 
-            VStack(spacing: 24) {
-                Spacer()
-                Text("You’re all set!")
-                    .font(.title2)
-                    .fontWeight(.semibold)
+            Spacer()
 
-                Text("You can change things later.")
-                    .foregroundColor(.secondary)
-
-                Spacer()
-
-                Button("Go to Home") {
-                    appState.hasCompletedOnboarding = true
+            Button {
+                if pageIndex < 2 {
+                    pageIndex += 1
+                } else {
+                    dismiss()
                 }
-                .buttonStyle(.borderedProminent)
+            } label: {
+                Text(pageIndex < 2 ? "Next" : "Get Started")
+                    .fontWeight(.semibold)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(14)
             }
-            .tag(1)
+            .padding(.horizontal, 24)
+
+            Spacer()
         }
-        .tabViewStyle(.page)
+        .background(Color(.systemGroupedBackground))
+        .ignoresSafeArea()
+    }
+
+    private func onboardingPage(title: String, subtitle: String) -> some View {
+        VStack(spacing: 12) {
+            Text(title)
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .multilineTextAlignment(.center)
+
+            Text(subtitle)
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+                .multilineTextAlignment(.center)
+        }
+        .padding(.horizontal, 32)
     }
 }

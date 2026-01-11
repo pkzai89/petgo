@@ -1,68 +1,68 @@
 import SwiftUI
 import Combine
+import FirebaseAuth
 
 final class AppState: ObservableObject {
 
-    // MARK: - App Flow
+    // MARK: - Auth
 
     enum AuthStatus {
-        case loggedIn
         case loggedOut
+        case loggedIn
     }
 
-    @Published var authStatus: AuthStatus = .loggedIn
-    @Published var hasCompletedOnboarding: Bool = true
-
-    // MARK: - Global Modal Routing
+    // MARK: - Global Modals
 
     enum AppModal: Identifiable {
         case addPet
         case addMemory
         case addReminder
-
         case petDetail
-        case memoryDetail
         case reminderDetail
         case placeDetail
         case productDetail
-
+        case memoryDetail
         case profile
         case settings
         case notifications
         case help
 
-        case login
+        var id: String { String(describing: self) }
+    }
 
-        var id: String {
-            switch self {
-            case .addPet: return "addPet"
-            case .addMemory: return "addMemory"
-            case .addReminder: return "addReminder"
+    // MARK: - Published State
 
-            case .petDetail: return "petDetail"
-            case .memoryDetail: return "memoryDetail"
-            case .reminderDetail: return "reminderDetail"
-            case .placeDetail: return "placeDetail"
-            case .productDetail: return "productDetail"
+    @Published var authStatus: AuthStatus = .loggedIn
+    @Published var hasCompletedOnboarding: Bool = true
+    @Published var activeModal: AppModal?
 
-            case .profile: return "profile"
-            case .settings: return "settings"
-            case .notifications: return "notifications"
-            case .help: return "help"
-                case .login: return "login"
+    // MARK: - Firebase Auth Listener
+
+    private var authListener: AuthStateDidChangeListenerHandle?
+
+    init() {
+        authListener = Auth.auth().addStateDidChangeListener { _, user in
+            DispatchQueue.main.async {
+                self.authStatus = (user == nil) ? .loggedOut : .loggedIn
             }
         }
     }
 
-    @Published var activeModal: AppModal? = nil
-
-    // MARK: - Auth Actions (Firebase-ready)
-
-    func logIn() {
-        authStatus = .loggedIn
+    deinit {
+        if let authListener {
+            Auth.auth().removeStateDidChangeListener(authListener)
+        }
     }
 
+    // MARK: - Auth Actions
+
     func logOut() {
-        authStatus = .loggedOut
+        try? Auth.auth().signOut()
+    }
+
+    // MARK: - Onboarding
+
+    func completeOnboarding() {
+        hasCompletedOnboarding = true
     }
 }

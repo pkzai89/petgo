@@ -10,71 +10,68 @@ struct ShopView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
+            VStack(alignment: .leading, spacing: 16) {
                 Text("Shop")
                     .font(.largeTitle)
-                    .fontWeight(.semibold)
-
+                    .fontWeight(.bold)
+                    .padding(.horizontal, 20)
+                    .padding(.top, 16)
                 LazyVGrid(columns: columns, spacing: 16) {
-                    Button(action: {
-                        if appState.authStatus == .loggedOut {
-                            appState.activeModal = .login
-                        } else {
-                            appState.activeModal = .addPet
-                        }
-                    }) {
-                        productCard("Treats")
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                    Button(action: {
-                        if appState.authStatus == .loggedOut {
-                            appState.activeModal = .login
-                        } else {
-                            appState.activeModal = .addPet
-                        }
-                    }) {
-                        productCard("Toys")
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                    Button(action: {
-                        if appState.authStatus == .loggedOut {
-                            appState.activeModal = .login
-                        } else {
-                            appState.activeModal = .addPet
-                        }
-                    }) {
-                        productCard("Accessories")
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                    Button(action: {
-                        if appState.authStatus == .loggedOut {
-                            appState.activeModal = .login
-                        } else {
-                            appState.activeModal = .addPet
-                        }
-                    }) {
-                        productCard("Food")
-                    }
-                    .buttonStyle(PlainButtonStyle())
+                    ShopCard(title: "Pet Toys", icon: "ball.fill", loggedIn: appState.authStatus == .loggedIn)
+                    ShopCard(title: "Food & Treats", icon: "fork.knife", loggedIn: appState.authStatus == .loggedIn)
+                    ShopCard(title: "Accessories", icon: "bag.fill", loggedIn: appState.authStatus == .loggedIn)
+                    ShopCard(title: "Health", icon: "cross.case.fill", loggedIn: appState.authStatus == .loggedIn)
                 }
+                .padding(.horizontal, 20)
+                .padding(.bottom, 40)
             }
-            .padding(20)
         }
         .background(Color(.systemGroupedBackground))
     }
+}
 
-    private func productCard(_ title: String) -> some View {
+private struct ShopCard: View {
+    let title: String
+    let icon: String
+    let loggedIn: Bool
+
+    var body: some View {
         VStack(spacing: 12) {
-            RoundedRectangle(cornerRadius: 12)
-                .fill(Color.gray.opacity(0.3))
-                .frame(height: 120)
-
+            ZStack {
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(Color.blue.opacity(0.15))
+                    .frame(height: 90)
+                Image(systemName: icon)
+                    .font(.system(size: 30))
+                    .foregroundColor(.blue)
+            }
             Text(title)
                 .font(.headline)
+                .foregroundColor(.primary)
+            if loggedIn {
+                Button(action: {}) {
+                    Text("Buy now")
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                        .frame(maxWidth: .infinity)
+                        .padding(8)
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+                }
+            } else {
+                Text("Sign in to purchase")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                    .frame(maxWidth: .infinity)
+                    .padding(8)
+                    .background(Color(.systemGray6))
+                    .cornerRadius(8)
+            }
         }
-        .padding()
+        .padding(12)
         .background(Color.white)
         .cornerRadius(16)
-        .shadow(color: .black.opacity(0.05), radius: 8)
+        .shadow(color: Color.black.opacity(0.05), radius: 6)
     }
 }
