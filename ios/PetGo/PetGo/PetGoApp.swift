@@ -2,12 +2,12 @@ import SwiftUI
 
 @main
 struct PetGoApp: App {
-    @StateObject private var session = AppSession()
+    @StateObject private var appState = AppState()
 
     var body: some Scene {
         WindowGroup {
             AppEntryView()
-                .environmentObject(session)
+                .environmentObject(appState)
         }
     }
 }

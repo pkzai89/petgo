@@ -2,7 +2,7 @@ import SwiftUI
 
 struct RootView: View {
 
-    @EnvironmentObject private var session: AppSession
+    @EnvironmentObject private var appState: AppState
     @State private var showAddMenu = false
 
     var body: some View {
@@ -11,13 +11,13 @@ struct RootView: View {
                 AppTopBar()
                 TabView {
                     HomeView()
-                        .environmentObject(session)
+                        .environmentObject(appState)
                         .tabItem {
                             Image(systemName: "house.fill")
                             Text("Home")
                         }
                     ExploreView()
-                        .environmentObject(session)
+                        .environmentObject(appState)
                         .tabItem {
                             Image(systemName: "map")
                             Text("Explore")
@@ -28,13 +28,13 @@ struct RootView: View {
                             Text("")
                         }
                     ShopView()
-                        .environmentObject(session)
+                        .environmentObject(appState)
                         .tabItem {
                             Image(systemName: "bag.fill")
                             Text("Shop")
                         }
                     MemoriesView()
-                        .environmentObject(session)
+                        .environmentObject(appState)
                         .tabItem {
                             Image(systemName: "photo.on.rectangle")
                             Text("Memories")

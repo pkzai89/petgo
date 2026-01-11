@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct ShopView: View {
+    @EnvironmentObject private var appState: AppState
 
     private let columns = [
         GridItem(.flexible()),

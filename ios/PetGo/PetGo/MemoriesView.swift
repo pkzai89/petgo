@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct MemoriesView: View {
+    @EnvironmentObject private var appState: AppState
     @State private var showMemoryDetail = false
     var body: some View {
         ScrollView {

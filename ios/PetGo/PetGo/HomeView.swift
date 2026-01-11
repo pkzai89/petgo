@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct HomeView: View {
+    @EnvironmentObject private var appState: AppState
 
     var body: some View {
         ScrollView {

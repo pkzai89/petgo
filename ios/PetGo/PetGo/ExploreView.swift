@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct ExploreView: View {
+    @EnvironmentObject private var appState: AppState
 
     var body: some View {
         ScrollView {
