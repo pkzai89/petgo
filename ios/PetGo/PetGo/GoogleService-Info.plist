@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>554887435008-hsimfpvudd7j2i6mqsv5qipbfr6n50gp.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.554887435008-hsimfpvudd7j2i6mqsv5qipbfr6n50gp</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDlXzRPvA92O47WqHf1b_bQyJlfCd2fTaU</string>
+	<key>GCM_SENDER_ID</key>
+	<string>554887435008</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.thepwgroup.PetGo</string>
+	<key>PROJECT_ID</key>
+	<string>petgo-1f092</string>
+	<key>STORAGE_BUCKET</key>
+	<string>petgo-1f092.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:554887435008:ios:5656da6ff1c8a2c1bb19e5</string>
+</dict>
+</plist>
