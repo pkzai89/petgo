@@ -1,0 +1,19 @@
+# macOS
+.DS_Store
+
+# Xcode
+DerivedData/
+*.xcworkspace
+*.xcuserstate
+*.xccheckout
+*.xcuserdata
+
+# Swift
+.build/
+
+# Firebase (later)
+GoogleService-Info.plist
+
+# Node / Android (later)
+node_modules/
+
