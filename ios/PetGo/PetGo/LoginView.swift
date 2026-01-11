@@ -1,15 +1,14 @@
 import SwiftUI
 
 struct LoginView: View {
-
-    @ObservedObject var session: AppSession
+    @EnvironmentObject var session: AppSession
 
     var body: some View {
         ZStack {
             LinearGradient(
-                colors: [Color.blue.opacity(0.8), Color.blue],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
+                colors: [Color.blue, Color.blue.opacity(0.75)],
+                startPoint: .top,
+                endPoint: .bottom
             )
             .ignoresSafeArea()
 
@@ -17,18 +16,24 @@ struct LoginView: View {
                 Spacer()
 
                 Image(systemName: "pawprint.fill")
-                    .font(.system(size: 56))
+                    .font(.system(size: 64))
                     .foregroundColor(.white)
+                    .padding(.bottom, 12)
 
                 Text("Welcome to PetGo")
-                    .font(.title)
+                    .font(.largeTitle)
                     .fontWeight(.semibold)
                     .foregroundColor(.white)
 
-                VStack(spacing: 14) {
+                Text("For the love of pets")
+                    .font(.title3)
+                    .foregroundColor(.white.opacity(0.9))
 
+                Spacer()
+
+                VStack(spacing: 16) {
                     Button {
-                        session.completeLogin()
+                        session.state = .onboarding
                     } label: {
                         Text("Continue with Email")
                             .fontWeight(.semibold)
@@ -40,12 +45,13 @@ struct LoginView: View {
                     }
 
                     Button {
-                        session.completeLogin()
+                        session.state = .onboarding
                     } label: {
                         HStack {
                             Image(systemName: "applelogo")
                             Text("Continue with Apple")
                         }
+                        .fontWeight(.semibold)
                         .frame(maxWidth: .infinity)
                         .padding()
                         .background(Color.black)
@@ -54,12 +60,13 @@ struct LoginView: View {
                     }
 
                     Button {
-                        session.completeLogin()
+                        session.state = .onboarding
                     } label: {
                         HStack {
-                            Image(systemName: "g.circle")
+                            Image(systemName: "globe")
                             Text("Continue with Google")
                         }
+                        .fontWeight(.semibold)
                         .frame(maxWidth: .infinity)
                         .padding()
                         .background(Color.white)
@@ -69,12 +76,9 @@ struct LoginView: View {
                 }
                 .padding(.horizontal)
 
-                Spacer()
+                Spacer(minLength: 40)
             }
         }
     }
 }
 
-#Preview {
-    LoginView(session: AppSession())
-}

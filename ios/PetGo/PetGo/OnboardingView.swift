@@ -1,63 +1,55 @@
 import SwiftUI
 
 struct OnboardingView: View {
-
-    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var session: AppSession
     @State private var pageIndex: Int = 0
 
     var body: some View {
         TabView(selection: $pageIndex) {
-
-            // PAGE 1 — INTRO
-            VStack(spacing: 24) {
+            // MARK: - PAGE 1 — INTRO
+            VStack(spacing: 20) {
                 Spacer()
-
                 Image(systemName: "pawprint.fill")
-                    .font(.system(size: 56))
+                    .font(.system(size: 64))
                     .foregroundColor(.blue)
-
+                    .padding(.bottom, 8)
                 Text("Let’s get to know your pet")
                     .font(.title2)
                     .fontWeight(.semibold)
-
                 Text("This helps us personalise your PetGo experience")
                     .font(.body)
                     .foregroundColor(.secondary)
                     .multilineTextAlignment(.center)
-                    .padding(.horizontal, 32)
-
+                    .padding(.horizontal, 40)
                 Spacer()
-
                 PrimaryButton(title: "Get Started") {
-                    pageIndex = 1
+                    withAnimation(.easeInOut) {
+                        pageIndex = 1
+                    }
                 }
+                .padding(.bottom, 12)
             }
             .tag(0)
-            .padding()
-
-            // PAGE 2 — PET DETAILS
-            VStack(spacing: 20) {
+            .padding(.horizontal)
+            .transition(.opacity)
+            // MARK: - PAGE 2 — PET DETAILS
+            VStack(spacing: 24) {
                 Spacer()
-
                 Circle()
-                    .fill(Color.gray.opacity(0.2))
+                    .fill(Color.gray.opacity(0.15))
                     .frame(width: 96, height: 96)
                     .overlay(
                         Image(systemName: "photo")
                             .foregroundColor(.gray)
+                            .font(.system(size: 24))
                     )
-
-                VStack(spacing: 12) {
+                    .padding(.bottom, 8)
+                VStack(spacing: 14) {
                     TextField("Pet Name", text: .constant(""))
                         .textFieldStyle(.roundedBorder)
-
                     HStack(spacing: 12) {
-                        Capsule()
-                            .fill(Color.blue.opacity(0.15))
-                            .overlay(Text("🐶 Dog"))
-                        Capsule()
-                            .fill(Color.gray.opacity(0.15))
-                            .overlay(Text("🐱 Cat"))
+                        SpeciesPill(title: "🐶 Dog", selected: true)
+                        SpeciesPill(title: "🐱 Cat", selected: false)
                     }
                     .frame(height: 40)
 
@@ -66,52 +58,56 @@ struct OnboardingView: View {
                 }
                 .padding()
                 .background(Color.white)
-                .cornerRadius(16)
-                .shadow(color: .black.opacity(0.05), radius: 8)
+                .cornerRadius(18)
+                .shadow(color: .black.opacity(0.06), radius: 10, y: 4)
+                .padding(.horizontal)
 
                 Spacer()
 
                 PrimaryButton(title: "Next") {
-                    pageIndex = 2
+                    withAnimation(.easeInOut) {
+                        pageIndex = 2
+                    }
                 }
+                .padding(.bottom, 12)
             }
             .tag(1)
-            .padding()
+            .transition(.opacity)
 
-            // PAGE 3 — COMPLETE
+            // MARK: - PAGE 3 — FINISH
             VStack(spacing: 24) {
                 Spacer()
-
-                RoundedRectangle(cornerRadius: 20)
-                    .fill(Color.blue.opacity(0.15))
-                    .frame(width: 120, height: 120)
-                    .overlay(
-                        Image(systemName: "sparkles")
-                            .font(.system(size: 40))
-                            .foregroundColor(.blue)
-                    )
-
-                Text("You’re all set")
+                Image(systemName: "checkmark.seal.fill")
+                    .font(.system(size: 64))
+                    .foregroundColor(.green)
+                    .padding(.bottom, 8)
+                Text("All set!")
                     .font(.title2)
                     .fontWeight(.semibold)
-
-                Text("You can update details anytime later")
+                Text("You’re ready to start using PetGo.")
                     .font(.body)
                     .foregroundColor(.secondary)
-
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 40)
                 Spacer()
-
                 PrimaryButton(title: "Go to Home") {
-                    dismiss()
+                    session.state = .main
                 }
+                .padding(.bottom, 12)
             }
             .tag(2)
-            .padding()
+            .padding(.horizontal)
+            .transition(.opacity)
+            .tag(2)
+            .transition(.opacity)
         }
         .tabViewStyle(.page(indexDisplayMode: .always))
         .background(Color(.systemGroupedBackground))
+        .animation(.easeInOut, value: pageIndex)
     }
 }
+
+// MARK: - Components
 
 struct PrimaryButton: View {
     let title: String
@@ -125,9 +121,28 @@ struct PrimaryButton: View {
                 .padding()
                 .background(Color.blue)
                 .foregroundColor(.white)
-                .cornerRadius(14)
+                .cornerRadius(16)
+                .scaleEffect(0.98)
         }
         .padding(.horizontal)
+    }
+}
+
+struct SpeciesPill: View {
+    let title: String
+    let selected: Bool
+
+    var body: some View {
+        Text(title)
+            .fontWeight(.medium)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 8)
+            .background(
+                selected
+                ? Color.blue.opacity(0.15)
+                : Color.gray.opacity(0.15)
+            )
+            .cornerRadius(20)
     }
 }
 

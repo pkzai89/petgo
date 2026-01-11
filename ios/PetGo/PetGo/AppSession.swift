@@ -1,25 +1,16 @@
 import SwiftUI
 import Combine
 
-final class AppSession: ObservableObject {
+// MARK: - Session State Enum
 
-    enum State {
-        case loggedOut
-        case onboarding
-        case home
-    }
+enum SessionState {
+    case loggedOut
+    case onboarding
+    case main
+}
 
-    @Published var state: State = .loggedOut
+// MARK: - AppSession ObservableObject
 
-    func completeLogin() {
-        state = .onboarding
-    }
-
-    func completeOnboarding() {
-        state = .home
-    }
-
-    func logout() {
-        state = .loggedOut
-    }
+class AppSession: ObservableObject {
+    @Published var state: SessionState = .loggedOut
 }
