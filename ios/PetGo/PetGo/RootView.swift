@@ -3,7 +3,7 @@ import SwiftUI
 struct RootView: View {
 
     @EnvironmentObject private var appState: AppState
-    @State private var showAddMenu: Bool = false
+    @State private var showAddMenu = false
 
     var body: some View {
         ZStack {
@@ -59,20 +59,14 @@ struct RootView: View {
             case .addReminder:
                 AddReminderView()
 
-            case .petDetail:
-                PetDetailPlaceholderView()
+            case .placeDetail:
+                PlaceDetailPlaceholderView()
 
             case .reminderDetail:
                 ReminderDetailPlaceholderView()
 
-            case .placeDetail:
-                PlaceDetailPlaceholderView()
-
             case .productDetail:
                 ProductDetailPlaceholderView()
-
-            case .memoryDetail:
-                MemoryDetailPlaceholderView()
 
             case .profile:
                 ProfileView()

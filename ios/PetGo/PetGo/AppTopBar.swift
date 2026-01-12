@@ -16,27 +16,11 @@ struct AppTopBar: View {
 
             Spacer()
 
-            Menu {
-                Button("Profile") {
-                    appState.activeModal = .profile
-                }
-
-                Button("Settings") {
-                    appState.activeModal = .settings
-                }
-
-                Button("Notifications") {
-                    appState.activeModal = .notifications
-                }
-
-                Divider()
-
-                Button("Log out", role: .destructive) {
-                    appState.authStatus = .loggedOut
-                }
+            Button {
+                appState.activeModal = .profile
             } label: {
-                Image(systemName: "line.3.horizontal")
-                    .font(.system(size: 20, weight: .semibold))
+                Image(systemName: "person.crop.circle")
+                    .font(.title2)
             }
         }
         .padding(.horizontal, 20)

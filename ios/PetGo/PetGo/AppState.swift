@@ -2,6 +2,7 @@ import SwiftUI
 import Combine
 import FirebaseAuth
 
+@MainActor
 final class AppState: ObservableObject {
 
     // MARK: - Auth
@@ -11,17 +12,15 @@ final class AppState: ObservableObject {
         case loggedIn
     }
 
-    // MARK: - Global Modals
+    // MARK: - Global Modals (LOCKED)
 
     enum AppModal: Identifiable {
         case addPet
         case addMemory
         case addReminder
-        case petDetail
-        case reminderDetail
         case placeDetail
+        case reminderDetail
         case productDetail
-        case memoryDetail
         case profile
         case settings
         case notifications
@@ -42,9 +41,7 @@ final class AppState: ObservableObject {
 
     init() {
         authListener = Auth.auth().addStateDidChangeListener { _, user in
-            DispatchQueue.main.async {
-                self.authStatus = (user == nil) ? .loggedOut : .loggedIn
-            }
+            self.authStatus = (user == nil) ? .loggedOut : .loggedIn
         }
     }
 
@@ -58,11 +55,5 @@ final class AppState: ObservableObject {
 
     func logOut() {
         try? Auth.auth().signOut()
-    }
-
-    // MARK: - Onboarding
-
-    func completeOnboarding() {
-        hasCompletedOnboarding = true
     }
 }

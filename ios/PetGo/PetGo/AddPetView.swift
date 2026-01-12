@@ -2,8 +2,8 @@ import SwiftUI
 
 struct AddPetView: View {
 
-    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var appState: AppState
+    @Environment(\.dismiss) private var dismiss
 
     @State private var petName: String = ""
     @State private var petType: String = "Dog"
@@ -12,17 +12,19 @@ struct AddPetView: View {
         VStack(spacing: 24) {
 
             // Header
-            VStack(alignment: .leading, spacing: 6) {
-                Text("Add Your Pet")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-
-                Text("Create a profile to personalise PetGo")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
+            HStack {
+                Text("Add Pet")
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                Spacer()
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: "xmark")
+                        .foregroundColor(.secondary)
+                }
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.top, 20)
+            .padding(.horizontal)
 
             // Form
             VStack(spacing: 16) {
@@ -35,12 +37,13 @@ struct AddPetView: View {
                 }
                 .pickerStyle(.segmented)
             }
+            .padding(.horizontal)
 
             Spacer()
 
-            // Primary action
+            // Save button (UI-only for now)
             Button {
-                appState.completeOnboarding()
+                // Phase 5.4 will persist to Firestore
                 dismiss()
             } label: {
                 Text("Save Pet")
@@ -48,17 +51,11 @@ struct AddPetView: View {
                     .padding()
                     .background(Color.blue)
                     .foregroundColor(.white)
-                    .cornerRadius(14)
-                    .fontWeight(.semibold)
+                    .cornerRadius(12)
             }
+            .padding()
         }
-        .padding(20)
+        .padding(.top)
         .background(Color(.systemGroupedBackground))
-        .ignoresSafeArea(edges: .bottom)
     }
-}
-
-#Preview {
-    AddPetView()
-        .environmentObject(AppState())
 }

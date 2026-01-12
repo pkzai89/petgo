@@ -2,22 +2,15 @@ import SwiftUI
 
 struct AppEntryView: View {
 
-    @EnvironmentObject private var appState: AppState
+    @EnvironmentObject var appState: AppState
 
     var body: some View {
-        Group {
-            switch appState.authStatus {
+        switch appState.authStatus {
+        case .loggedOut:
+            LoginView()
 
-            case .loggedOut:
-                LoginView()
-
-            case .loggedIn:
-                if appState.hasCompletedOnboarding {
-                    RootView()
-                } else {
-                    AddPetView()
-                }
-            }
+        case .loggedIn:
+            RootView()
         }
     }
 }

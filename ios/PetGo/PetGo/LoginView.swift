@@ -7,102 +7,59 @@ struct LoginView: View {
 
     @State private var email: String = ""
     @State private var password: String = ""
-    @State private var isCreatingAccount: Bool = false
-    @State private var isLoading: Bool = false
     @State private var errorMessage: String?
 
     var body: some View {
         VStack(spacing: 24) {
 
-            Spacer()
+            Text("Welcome to PetGo")
+                .font(.largeTitle)
+                .fontWeight(.bold)
 
-            VStack(spacing: 8) {
-                Text("Welcome to PetGo")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-
-                Text(isCreatingAccount
-                     ? "Create an account to get started"
-                     : "Sign in with your email to continue")
-                    .foregroundColor(.secondary)
-            }
-
-            VStack(spacing: 16) {
+            VStack(spacing: 12) {
                 TextField("Email", text: $email)
-                    .textInputAutocapitalization(.never)
+                    .textContentType(.emailAddress)
                     .keyboardType(.emailAddress)
-                    .autocorrectionDisabled()
-                    .padding()
-                    .background(Color(.systemGray6))
-                    .cornerRadius(12)
+                    .autocapitalization(.none)
+                    .textFieldStyle(.roundedBorder)
 
                 SecureField("Password", text: $password)
-                    .padding()
-                    .background(Color(.systemGray6))
-                    .cornerRadius(12)
+                    .textFieldStyle(.roundedBorder)
             }
 
             if let errorMessage {
                 Text(errorMessage)
                     .foregroundColor(.red)
                     .font(.footnote)
-                    .multilineTextAlignment(.center)
             }
 
-            Button {
-                authenticate()
-            } label: {
-                ZStack {
-                    if isLoading {
-                        ProgressView()
-                    } else {
-                        Text(isCreatingAccount ? "Create Account" : "Sign In")
-                            .fontWeight(.semibold)
-                    }
-                }
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(Color.blue)
-                .foregroundColor(.white)
-                .cornerRadius(14)
+            Button("Log In") {
+                logIn()
             }
-            .disabled(isLoading || email.isEmpty || password.isEmpty)
+            .buttonStyle(.borderedProminent)
 
-            Button {
-                isCreatingAccount.toggle()
-                errorMessage = nil
-            } label: {
-                Text(isCreatingAccount
-                     ? "Already have an account? Sign In"
-                     : "Don’t have an account? Create one")
-                    .font(.footnote)
+            Button("Create Account") {
+                signUp()
             }
+            .font(.footnote)
 
             Spacer()
         }
         .padding()
     }
 
-    // MARK: - Auth Logic
+    // MARK: - Actions
 
-    private func authenticate() {
-        errorMessage = nil
-        isLoading = true
-
-        if isCreatingAccount {
-            Auth.auth().createUser(withEmail: email, password: password) { _, error in
-                handleAuthResult(error)
-            }
-        } else {
-            Auth.auth().signIn(withEmail: email, password: password) { _, error in
-                handleAuthResult(error)
+    private func logIn() {
+        Auth.auth().signIn(withEmail: email, password: password) { _, error in
+            if let error {
+                errorMessage = error.localizedDescription
             }
         }
     }
 
-    private func handleAuthResult(_ error: Error?) {
-        DispatchQueue.main.async {
-            isLoading = false
+    private func signUp() {
+        Auth.auth().createUser(withEmail: email, password: password) { _, error in
             if let error {
                 errorMessage = error.localizedDescription
             }
